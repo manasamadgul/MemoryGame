@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title> Memory Game Sample</title>
+</head>
+<body>
+    <div id="javascript">
+        <script type="text/javascript">
+
+            /* Generate random 6 digit number and then set timer*/
+            function generateRandomNum() {
+                var randomNum = Math.floor(100000 + Math.random() * 900000);
+                document.getElementById("shownumber").innerHTML = randomNum;
+                window.localStorage.setItem("number", randomNum);
+                document.getElementById("refreshtext").innerHTML = "Refreshing the page in 10 seconds";
+                refresh();
+            }
+
+            /* show() function call */
+            function refresh() {
+                window.setTimeout(function () { show(); }, 5000);
+            }
+
+            /* display after 5 seconds to let the user guess the number */
+            function show() {
+                document.getElementById('generatenum').style.display = "none";
+                document.getElementById('countdowndiv').style.display = "block";
+                document.getElementById('inputId').focus();
+            }
+            /* on Guess button click */
+            function guess() {
+
+                var count = 0;
+                //window.alert(document.getElementById('inputId').value);
+                if (document.getElementById('inputId').value == null || document.getElementById('inputId').value == "") {
+                    window.alert("Enter a number");
+                }
+                else {
+                    var storedArr = window.localStorage.getItem("number").split('');
+                    var inputextArr = document.getElementById('inputId').value.split('');
+
+                    for (var i = 0, len = storedArr.length; i < len; i += 1) {
+
+                        if (storedArr[i] == inputextArr[i]) {
+                            count++;
+
+                        }
+                        else {
+                            // break;
+                        }
+                    }
+                    document.getElementById("numofguesses").innerHTML = count + " correct guesses";
+                }
+            }
+            /* on Replay Game button click */
+            function replay() {
+                window.localStorage.clear();
+                window.location.reload();
+            }
+
+        </script>
+    </div>
+
+    <div id="generatenum">
+       <h1> Generate the number </h1>
+        <p id="shownumber"></p>
+        <button onclick="generateRandomNum()">Generate</button>
+        <p id="refreshtext"></p>
+            </div>
+    <div id="countdowndiv" style="display:none;">
+        <h1>Guess the number</h1>
+        <div>
+            <!--maxlength is working for IE but not for chrome-->
+            <input type="number" id="inputId" name="inputname" maxlength="6"/>
+            <p>
+                <button onclick="guess()" >Guess</button>
+                <button onclick="replay()">Replay Game</button>
+            </p>
+            <p id="numofguesses"></p>
+        </div>
+    </div>
+
+</body>
+</html>
